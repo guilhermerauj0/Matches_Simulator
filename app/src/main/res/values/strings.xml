@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Matches Simulator</string>
+    <string name="add_match_simulate">Add Match Simulate</string>
 </resources>
