@@ -14,11 +14,11 @@
         android:theme="@style/Theme.MatchesSimulator"
         tools:targetApi="31">
         <activity
-            android:name=".DetailActivity"
+            android:name=".ui.DetailActivity"
             android:exported="false"
             android:theme="@style/Theme.MatchesSimulator.NoActionBar"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
