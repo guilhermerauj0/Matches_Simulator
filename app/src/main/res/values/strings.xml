@@ -4,4 +4,5 @@
     <string name="image_of_home_team">Image of home team</string>
     <string name="image_of_visitor_team">Image of visitor team</string>
     <string name="versus">x</string>
+    <string name="error_api">Unexpected Error</string>
 </resources>
