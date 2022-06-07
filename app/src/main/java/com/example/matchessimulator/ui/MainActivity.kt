@@ -48,17 +48,28 @@ class MainActivity : AppCompatActivity() {
         TODO("Criar evento de adicionar partidas")
     }
 
+     */
+
     private fun setupMatchesRefresh() {
-        TODO("Atuallizar as partidas com a função swipe")
+        binding.srlMatches.setOnRefreshListener(this::findMatchesFromApi)
     }
-    */
+
 
     private fun setupMatchesList() {
         binding.rvMatches.setHasFixedSize(true)
         binding.rvMatches.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        matchesApi.getMatches().enqueue(object : Callback<List<Match>> {
+        findMatchesFromApi()
+    }
 
+
+
+    private fun showErrorMessage() {
+        Snackbar.make(binding.fabSimulate, R.string.error_api, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun findMatchesFromApi() {
+        matchesApi.getMatches().enqueue(object : Callback<List<Match>> {
             override fun onResponse(call: Call<List<Match>>, response: Response<List<Match>>) {
                 if(response.isSuccessful){
                     val matches : List<Match>
@@ -70,15 +81,13 @@ class MainActivity : AppCompatActivity() {
                 } else{
                     showErrorMessage()
                 }
+                binding.srlMatches.isRefreshing = false
             }
 
             override fun onFailure(call: Call<List<Match>>, t: Throwable) {
                 showErrorMessage()
+                binding.srlMatches.isRefreshing = false
             }
         })
-    }
-
-    private fun showErrorMessage() {
-        Snackbar.make(binding.fabSimulate, R.string.error_api, Snackbar.LENGTH_SHORT).show()
     }
 }
