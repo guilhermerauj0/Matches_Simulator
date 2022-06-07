@@ -3,10 +3,12 @@ package com.example.matchessimulator.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.matchessimulator.R
 import com.example.matchessimulator.data.MatchesApi
 import com.example.matchessimulator.databinding.ActivityMainBinding
 import com.example.matchessimulator.domain.Match
+import com.example.matchessimulator.ui.adapter.MatchesAdapter
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var matchesAdapter: MatchesAdapter
     private lateinit var binding: ActivityMainBinding
     private lateinit var matchesApi: MatchesApi
 
@@ -27,8 +30,8 @@ class MainActivity : AppCompatActivity() {
 
         setupHttpClient()
         setupMatchesList()
-        setupMatchesRefresh()
-        setupFloatActionButton()
+        //setupMatchesRefresh()
+        //setupFloatActionButton()
     }
 
     private fun setupHttpClient() {
@@ -40,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         matchesApi = retrofit.create(MatchesApi::class.java)
     }
 
+    /*
     private fun setupFloatActionButton() {
         TODO("Criar evento de adicionar partidas")
     }
@@ -47,14 +51,22 @@ class MainActivity : AppCompatActivity() {
     private fun setupMatchesRefresh() {
         TODO("Atuallizar as partidas com a função swipe")
     }
+    */
 
     private fun setupMatchesList() {
+        binding.rvMatches.setHasFixedSize(true)
+        binding.rvMatches.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
         matchesApi.getMatches().enqueue(object : Callback<List<Match>> {
+
             override fun onResponse(call: Call<List<Match>>, response: Response<List<Match>>) {
                 if(response.isSuccessful){
                     val matches : List<Match>
                     matches = response.body()!!
-                    Log.i("SIMULADOR", "Deu tudo certo meu patrao!" + matches.size)
+
+                    matchesAdapter = MatchesAdapter(matches)
+                    binding.rvMatches.adapter = (matchesAdapter)
+
                 } else{
                     showErrorMessage()
                 }
