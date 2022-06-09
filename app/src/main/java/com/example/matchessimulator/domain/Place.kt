@@ -6,8 +6,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class Place(
-    @SerializedName("nome")
-    private val name: String,
-    @SerializedName("imagem")
-    private val image: String
+    @SerializedName("nome") internal val name: String,
+    @SerializedName("imagem") internal val image: String
         ) : Parcelable
