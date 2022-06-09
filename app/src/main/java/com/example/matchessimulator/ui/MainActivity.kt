@@ -64,6 +64,9 @@ class MainActivity : AppCompatActivity() {
         binding.rvMatches.setHasFixedSize(true)
         binding.rvMatches.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+        matchesAdapter = MatchesAdapter(Collections.emptyList())
+        binding.rvMatches.adapter = (matchesAdapter)
+
         findMatchesFromApi()
     }
 
