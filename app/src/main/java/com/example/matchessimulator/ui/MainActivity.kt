@@ -2,7 +2,6 @@ package com.example.matchessimulator.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.matchessimulator.R
 import com.example.matchessimulator.data.MatchesApi
@@ -15,6 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity() {
 
         setupHttpClient()
         setupMatchesList()
-        //setupMatchesRefresh()
-        //setupFloatActionButton()
+        setupMatchesRefresh()
+        setupFloatActionButton()
     }
 
     private fun setupHttpClient() {
@@ -43,12 +43,17 @@ class MainActivity : AppCompatActivity() {
         matchesApi = retrofit.create(MatchesApi::class.java)
     }
 
-    /*
     private fun setupFloatActionButton() {
-        TODO("Criar evento de adicionar partidas")
+        binding.fabSimulate.setOnClickListener {
+            val random = Random()
+            for (i in 0 until matchesAdapter.itemCount) {
+                val match: Match = matchesAdapter.getMatches().get(i)
+                match.homeTeam.score = random.nextInt(match.homeTeam.stars + 1)
+                match.awayTeam.score = random.nextInt(match.awayTeam.stars + 1)
+                matchesAdapter.notifyItemChanged(i)
+            }
+        }
     }
-
-     */
 
     private fun setupMatchesRefresh() {
         binding.srlMatches.setOnRefreshListener(this::findMatchesFromApi)
@@ -72,8 +77,7 @@ class MainActivity : AppCompatActivity() {
         matchesApi.getMatches().enqueue(object : Callback<List<Match>> {
             override fun onResponse(call: Call<List<Match>>, response: Response<List<Match>>) {
                 if(response.isSuccessful){
-                    val matches : List<Match>
-                    matches = response.body()!!
+                    val matches : List<Match> = response.body()!!
 
                     matchesAdapter = MatchesAdapter(matches)
                     binding.rvMatches.adapter = (matchesAdapter)

@@ -1,9 +1,7 @@
 package com.example.matchessimulator.ui.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,17 +12,9 @@ class MatchesAdapter (private var matches: List<Match>) : RecyclerView.Adapter<M
 
     inner class ViewHolder(val binding: MatchItemBinding) : RecyclerView.ViewHolder(binding.root) {}
 
-    /*
-    @SuppressLint("NotConstructor")
-    fun MatchesAdapter(matches : List<Match>){
-        this.matches = matches
-    }
-
     fun getMatches() : List<Match>{
         return matches
     }
-
-     */
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = MatchItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -41,8 +31,10 @@ class MatchesAdapter (private var matches: List<Match>) : RecyclerView.Adapter<M
         Glide.with(context).load(match.awayTeam.image).circleCrop().into(holder.binding.imgTeamVisitor)
 
         // Adapta os dados da partida (recuperada da API) para o nosso layout
-        holder.binding.txtNameHome.setText(match.homeTeam.name)
-        holder.binding.txtNameVisitor.setText(match.awayTeam.name)
+        match.homeTeam.score?.let { holder.binding.txtScoreHome.text = it.toString() }
+        match.awayTeam.score?.let { holder.binding.txtScoreVisitor.text = it.toString() }
+        holder.binding.txtNameHome.text = match.homeTeam.name
+        holder.binding.txtNameVisitor.text = match.awayTeam.name
 
     }
     override fun getItemCount(): Int {
