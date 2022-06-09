@@ -1,12 +1,15 @@
 package com.example.matchessimulator.ui.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.matchessimulator.databinding.MatchItemBinding
 import com.example.matchessimulator.domain.Match
+import com.example.matchessimulator.ui.DetailActivity
+import okhttp3.internal.Internal
 
 class MatchesAdapter (private var matches: List<Match>) : RecyclerView.Adapter<MatchesAdapter.ViewHolder>() {
 
@@ -35,6 +38,12 @@ class MatchesAdapter (private var matches: List<Match>) : RecyclerView.Adapter<M
         match.awayTeam.score?.let { holder.binding.txtScoreVisitor.text = it.toString() }
         holder.binding.txtNameHome.text = match.homeTeam.name
         holder.binding.txtNameVisitor.text = match.awayTeam.name
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra(DetailActivity.Extras.MATCH, match)
+            context.startActivity(intent)
+        }
 
     }
     override fun getItemCount(): Int {
